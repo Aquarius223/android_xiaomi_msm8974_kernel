@@ -717,9 +717,5 @@ CONFIG_TCP_CONG_WESTWOOD=y
 CONFIG_DEFAULT_WESTWOOD=y
 CONFIG_DEFAULT_TCP_CONG="westwood"
 CONFIG_POWERSUSPEND=y
-<<<<<<< HEAD:arch/arm/configs/virgo_defconfig
-=======
-CONFIG_MSM_CPU_VOLTAGE_CONTROL=y
-CONFIG_MSM_HOTPLUG=y
 CONFIG_FB_MSM_MDSS_KCAL_CTRL=y
->>>>>>> 31a2c4951c8... Update defconfig:arch/arm/configs/cancro_defconfig
+CONFIG_FORCE_FAST_CHARGE=y
