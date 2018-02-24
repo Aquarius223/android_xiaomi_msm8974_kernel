@@ -1,23 +1,16 @@
 /*
- * drivers/soc/qcom/autosmp.c
+ * AutoSMP Hotplug Driver
  *
- * automatically hotplug/unplug multiple cpu cores
- * based on cpu load and suspend state
+ * Automatically hotplug/unplug multiple CPU cores
+ * based on cpu load and suspend state.
  *
- * based on the msm_mpdecision code by
+ * Based on the msm_mpdecision code by
  * Copyright (c) 2012-2013, Dennis Rassmann <showp1984@gmail.com>
  *
- * Copyright (C) 2013-2014, Rauf Gungor, http://github.com/mrg666
- * rewrite to simplify and optimize, Jul. 2013, http://goo.gl/cdGw6x
- * optimize more, generalize for n cores, Sep. 2013, http://goo.gl/448qBz
- * generalize for all arch, rename as autosmp, Dec. 2013, http://goo.gl/x5oyhy
- *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. For more details, see the GNU
- * General Public License included with the Linux kernel or available
- * at www.gnu.org/licenses
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
  */
 
 #include <linux/moduleparam.h>
@@ -33,11 +26,11 @@
 
 #define ASMP_TAG			"AutoSMP:"
 #define ASMP_ENABLED			false
-#define DEFAULT_BOOST_LOCK_DUR		800 * 1000L
+#define DEFAULT_BOOST_LOCK_DUR		500 * 1000L
 #define DEFAULT_NR_CPUS_BOOSTED		2
-#define DEFAULT_UPDATE_RATE		30
+#define DEFAULT_UPDATE_RATE		20
 #define MIN_INPUT_INTERVAL		150 * 1000L
-#define DEFAULT_MIN_BOOST_FREQ		1728000
+#define DEFAULT_MIN_BOOST_FREQ		1497600
 
 #if DEBUG
 struct asmp_cpudata_t {
@@ -66,10 +59,10 @@ static struct asmp_param_struct {
 	.delay = DEFAULT_UPDATE_RATE,
 	.max_cpus = NR_CPUS,
 	.min_cpus = 1,
-	.cpufreq_up = 95,
-	.cpufreq_down = 80,
+	.cpufreq_up = 80,
+	.cpufreq_down = 60,
 	.cycle_up = 1,
-	.cycle_down = 1,
+	.cycle_down = 2,
 	.min_boost_freq = DEFAULT_MIN_BOOST_FREQ,
 	.cpus_boosted = DEFAULT_NR_CPUS_BOOSTED,
 	.enabled = ASMP_ENABLED,
@@ -111,7 +104,7 @@ static void __cpuinit asmp_work_fn(struct work_struct *work)
 	unsigned int nr_cpu_online;
 	unsigned int min_boost_freq = asmp_param.min_boost_freq;
 	u64 now;
-	
+
 	if (!asmp_param.enabled)
 		return;
 
@@ -315,7 +308,6 @@ static void __ref hotplug_stop(void)
 	int cpu;
 
 	input_unregister_handler(&autosmp_input_handler);
-
 	flush_workqueue(asmp_workq);
 	cancel_delayed_work_sync(&asmp_work);
 	destroy_workqueue(asmp_workq);
