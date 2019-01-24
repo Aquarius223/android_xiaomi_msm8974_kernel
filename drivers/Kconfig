@@ -158,4 +158,6 @@ source "drivers/tspdrv/Kconfig"
 
 source "drivers/iio/Kconfig"
 
+source "drivers/dts_eagle/Kconfig"
+
 endmenu
