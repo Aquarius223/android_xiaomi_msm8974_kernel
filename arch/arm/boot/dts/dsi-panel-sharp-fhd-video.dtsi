@@ -85,6 +85,9 @@
 			05 01 00 00 10 00 02 29 00];
 		qcom,mdss-pan-physical-width-dimension = <61>;
 		qcom,mdss-pan-physical-height-dimension = <109>;
+		qcom,mdss-dsi-pan-enable-dynamic-fps;
+ 		qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode";
+ 		qcom,mdss-dsi-min-refresh-rate = <45>;
 		qcom,mdss-panel-on-param-delay = <100>;
 		qcom,dispparam-enabled;
 		qcom,mdss-dsi-dispparam-ceon-command = [
