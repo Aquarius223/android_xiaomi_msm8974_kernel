@@ -148,7 +148,6 @@ DT_MACHINE_START(MSMSAMARIUM_DT, "Qualcomm MSM Samarium(Flattened Device Tree)")
 	.map_io = msmsamarium_map_io,
 	.init_irq = msm_dt_init_irq,
 	.init_machine = msmsamarium_init,
-	.handle_irq = gic_handle_irq,
 	.timer = &msm_dt_timer,
 	.dt_compat = msmsamarium_dt_match,
 	.reserve = msmsamarium_reserve,
