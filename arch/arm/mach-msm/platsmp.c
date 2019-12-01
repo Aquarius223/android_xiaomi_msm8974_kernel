@@ -62,13 +62,6 @@ void __cpuinit platform_secondary_init(unsigned int cpu)
 	WARN_ON(msm_platform_secondary_init(cpu));
 
 	/*
-	 * if any interrupts are already enabled for the primary
-	 * core (e.g. timer irq), then they will not have been enabled
-	 * for us: do so
-	 */
-	gic_secondary_init(0);
-
-	/*
 	 * let the primary processor know we're out of the
 	 * pen, then head off into the C entry point
 	 */
@@ -233,7 +226,7 @@ static int __cpuinit release_from_pen(unsigned int cpu)
 	 * the boot monitor to read the system wide flags register,
 	 * and branch to the address found there.
 	 */
-	gic_raise_softirq(cpumask_of(cpu), 1);
+	arch_send_wakeup_ipi_mask(cpumask_of(cpu));
 
 	timeout = jiffies + (1 * HZ);
 	while (time_before(jiffies, timeout)) {
@@ -324,8 +317,6 @@ static void __init msm_smp_init_cpus(void)
 
 	for (i = 0; i < ncores; i++)
 		set_cpu_possible(i, true);
-
-	set_smp_cross_call(gic_raise_softirq);
 }
 
 static void __init arm_smp_init_cpus(void)
@@ -342,8 +333,6 @@ static void __init arm_smp_init_cpus(void)
 
 	for (i = 0; i < ncores; i++)
 		set_cpu_possible(i, true);
-
-	set_smp_cross_call(gic_raise_softirq);
 }
 
 static int cold_boot_flags[] __initdata = {
