@@ -2168,6 +2168,9 @@ static inline int thaw_bdev(struct block_device *bdev, struct super_block *sb)
 extern int sync_filesystem(struct super_block *);
 extern const struct file_operations def_blk_fops;
 extern const struct file_operations def_chr_fops;
+#ifdef CONFIG_AUTO_FSYNC
+extern void sync_filesystems(int wait);
+#endif
 extern const struct file_operations bad_sock_fops;
 extern const struct file_operations def_fifo_fops;
 #ifdef CONFIG_BLOCK

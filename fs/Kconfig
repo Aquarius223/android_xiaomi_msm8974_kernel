@@ -284,4 +284,8 @@ endif # NETWORK_FILESYSTEMS
 source "fs/nls/Kconfig"
 source "fs/dlm/Kconfig"
 
+config AUTO_FSYNC
+	bool "auto fsync"
+	default y
+
 endmenu
